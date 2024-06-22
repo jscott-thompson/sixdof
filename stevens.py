@@ -8,6 +8,7 @@
 from enum import Enum, IntEnum, auto
 from math import sqrt, cos, sin, acos
 
+
 class Stevens():
     class Status(Enum):
         READY = auto()
@@ -19,25 +20,25 @@ class Stevens():
         TURNING = auto()
 
     class StateComponents(IntEnum):
-        VT =        0   # air speed (ft/sec)
-        alpha =     1   # angle of attack (rad)
-        beta =      2   # angle of sideslip (rad)
-        phi =       3   # roll angle (rad)
-        theta =     4   # pitch angle (rad)
-        psi =       5   # yaw angle (rad)
-        P =         6   # roll rate (rad/sec)
-        Q =         7   # pitch rate (rad/sec)
-        R =         8   # yaw rate (rad/sec)
-        pn =        9   # northward horizontal displacement (feet)
-        pe =        10  # eastward horizontal displacement (feet)
-        h =         11  # altitude (feet)
-        pow =       12  # engine thrust dynamics lag state
+        VT = 0  # air speed (ft/sec)
+        alpha = 1  # angle of attack (rad)
+        beta = 2  # angle of sideslip (rad)
+        phi = 3  # roll angle (rad)
+        theta = 4  # pitch angle (rad)
+        psi = 5  # yaw angle (rad)
+        P = 6  # roll rate (rad/sec)
+        Q = 7  # pitch rate (rad/sec)
+        R = 8  # yaw rate (rad/sec)
+        pn = 9  # northward horizontal displacement (feet)
+        pe = 10  # eastward horizontal displacement (feet)
+        h = 11  # altitude (feet)
+        pow = 12  # engine thrust dynamics lag state
 
     class ManeuverComponents(IntEnum):
-        throttle =  0   # Throttle command, 0.0 < u(1) < 1.0
-        elevator =  1   # Elevator command in degrees
-        aileron =   2   # Aileron command in degrees
-        rudder =    3   # Rudder command in degrees
+        throttle = 0  # Throttle command, 0.0 < u(1) < 1.0
+        elevator = 1  # Elevator command in degrees
+        aileron = 2  # Aileron command in degrees
+        rudder = 3  # Rudder command in degrees
 
     def __init__(self):
         # Placeholder: DomainBehavior init
@@ -55,7 +56,7 @@ class Stevens():
         pass
 
     def processManueverCommand(selfself, msg):
-        # Manuver command message format:
+        # Maneuver command message format:
         # t, throttle, elevator, aileron, rudder
         pass
 
@@ -64,7 +65,7 @@ class Stevens():
         pass
 
     def extTransition(self):
-        # Process external event (start, manuver, stop)
+        # Process external event (start, maneuver, stop)
         pass
 
     def __str__(self):

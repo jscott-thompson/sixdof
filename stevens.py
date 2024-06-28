@@ -5,12 +5,14 @@
 
 """
 
+from DomainInterface.DomainBehavior import DomainBehavior
+from Domain.Basic.Object import Message
 from enum import Enum, IntEnum, auto
 import numpy as np
 from math import sqrt, cos, sin, acos
 
 
-class Stevens():
+class Stevens(DomainBehavior):
     class Status(Enum):
         READY = auto()
         FLYING = auto()
@@ -43,7 +45,7 @@ class Stevens():
         rudder = auto()  # Rudder command in degrees
 
     def __init__(self):
-        # Placeholder: DomainBehavior init
+        DomainBehavior.__init__(self)
 
         self.state = {'status': self.Status.READY,
                       'manuever': self.Maneuver.STRAIGHT,

@@ -5,12 +5,14 @@
 
 """
 
+from DomainInterface.DomainBehavior import DomainBehavior
+from Domain.Basic.Object import Message
 from enum import Enum, IntEnum, auto
 import numpy as np
 from math import sqrt, cos, sin, acos
 
 
-class Stevens():
+class stevens(DomainBehavior):
     class Status(Enum):
         READY = auto()
         FLYING = auto()
@@ -43,15 +45,16 @@ class Stevens():
         rudder = auto()  # Rudder command in degrees
 
     def __init__(self):
-        # Placeholder: DomainBehavior init
+        DomainBehavior.__init__(self)
 
         self.state = {'status': self.Status.READY,
-                      'manuever': self.Maneuver.STRAIGHT,
+                      'maneuver': self.Maneuver.STRAIGHT,
                       'adjust_cy': True,
                       'sigma': 0.1,
-                      'maneuver_commands': np.zeros(len(self.ManeuverComponents)),
-                      'physical_state': np.zeros(len(self.StateComponents))
+                      'maneuver_commands': np.zeros(len(self.ManeuverComponents)+1),
+                      'physical_state': np.zeros(len(self.StateComponents)+1)
                       }
+        self.msg = Message(None, None)
 
     def setInitialPhysicalState(self, msg):
         # Initial state message format:
@@ -61,19 +64,19 @@ class Stevens():
             for i in range(8):
                 temp += str(msg.value[i]) + ', '
             temp += str(msg.value[8])
-            msg = temp
+            msg.value = temp
         [t, vt, alpha, beta, phi, theta, psi, alt, power] = [float(x) for x in msg.value.split(',')]
 
         comp = self.StateComponents
         self.state['physical_state'][comp.t] = t
-        self.state['physical_state'][comp.vt] = vt
+        self.state['physical_state'][comp.VT] = vt
         self.state['physical_state'][comp.alpha] = alpha
         self.state['physical_state'][comp.beta] = beta
         self.state['physical_state'][comp.phi] = phi
         self.state['physical_state'][comp.theta] = theta
         self.state['physical_state'][comp.psi] = psi
-        self.state['physical_state'][comp.alt] = alt
-        self.state['physical_state'][comp.power] = power
+        self.state['physical_state'][comp.h] = alt
+        self.state['physical_state'][comp.pow] = power
 
         return
 
@@ -832,10 +835,10 @@ class Stevens():
                     msg = temp
                 [t, throttle, elevator, aileron, rudder] = [float(x) for x in msg.split(',')]
                 comp = self.ManeuverComponents
-                self.Maneuver[comp.throttle] = throttle
-                self.Maneuver[comp.elevator] = elevator
-                self.Maneuver[comp.aileron] = aileron
-                self.Maneuver[comp.rudder] = rudder
+                self.state['maneuver_commands'][comp.throttle] = throttle
+                self.state['maneuver_commands'][comp.elevator] = elevator
+                self.state['maneuver_commands'][comp.aileron] = aileron
+                self.state['maneuver_commands'][comp.rudder] = rudder
         return
     def __str__(self):
         msg = str(self.state['physical_state'])
